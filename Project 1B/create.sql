@@ -1,7 +1,8 @@
 
 -- movie id is unique primary key
 -- check that rating is valid
-create table Movie(id int, title varchar(100), year int, rating varchar(10), company varchar(50), primary key(id), check(rating IS NULL OR rating='G' OR rating='PG' OR rating='PG-13' OR rating='R' OR rating='NC-17'));
+-- check that year is valid
+create table Movie(id int, title varchar(100), year int, rating varchar(10), company varchar(50), primary key(id), check(rating IS NULL OR rating='G' OR rating='PG' OR rating='PG-13' OR rating='R' OR rating='NC-17'), check(year > 999 AND year < 2100));
 -- id = Movie ID, title = Movie title, year = Release year, rating = MPAA rating, company = Production company
 
 
