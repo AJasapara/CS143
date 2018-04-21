@@ -3,7 +3,7 @@
 INSERT INTO Movie VALUES (2, 'Test', 2018, 'PG-13', 'Lakeshore Entertainment');
 
 -- Invalid rating
--- MySQL doesn't support CHECK so no error
+-- MySQL doesn't support CHECK so cannot list error output
 INSERT INTO Movie VALUES (7, 'Test', 2018, 'KK', 'Lakeshore Entertainment');
 
 -- Actor with id = 1 exists
@@ -11,7 +11,7 @@ INSERT INTO Movie VALUES (7, 'Test', 2018, 'KK', 'Lakeshore Entertainment');
 INSERT INTO Actor VALUES (1, 'Last', 'First', 'Male', '1982-01-06', NULL);
 
 -- Invalid sex
--- MySQL doesn't support CHECK so no error
+-- MySQL doesn't support CHECK so cannot list error output
 INSERT INTO Actor VALUES (4, 'Last', 'First', 'Hi', '1999-01-22', NULL);
 
 -- Director with id = 16 exists
