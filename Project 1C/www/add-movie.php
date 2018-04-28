@@ -6,7 +6,7 @@
 
 <body>
 	<h1>Add Movie Info</h1>
-	<form action="add-movie.php" method="GET">
+	<form action="" method="GET">
 
 		<div class="label"><b>Title</b></div> 
 		<input class="input-form text-field" type="text" name="title" maxlength="30">
@@ -166,7 +166,7 @@
 			}
 
 			// Add genres to the movie
-			echo "Genres added to the movie: <br>";
+			// echo "Genres added to the movie: <br>";
 			foreach($genre as $movieGenre) {
 				$addMovieGenreQuery = "INSERT INTO MovieGenre VALUES('$newID','$movieGenre')";
 				if($db->query($addMovieGenreQuery) === true) {

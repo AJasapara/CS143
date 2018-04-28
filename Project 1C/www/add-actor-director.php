@@ -6,7 +6,7 @@
 
 <body>
 	<h1>Add Actor/Director Info</h1>
-	<form action="add-actor-director.php" method="GET">
+	<form action="" method="GET">
 
 		<input class="input-form" type="radio" name="person" value="Actor" id="actor">Actor 
 
