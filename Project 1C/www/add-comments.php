@@ -1,5 +1,3 @@
-<!-- name varchar(20), time timestamp, mid int, rating int, comment varchar(500) -->
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,10 +52,8 @@
 
 		<?php
 		if(isset($_GET['submit-button'])) {
-			if(inputValid() == true) {
-				echo "<br>input valid!";
+			if(inputValid() == true) 
 				addReview();
-			}
 		}
 
 		function inputValid() {
@@ -136,9 +132,6 @@
 			
 		}
 	?>
-
-
-
 
 </body>
 

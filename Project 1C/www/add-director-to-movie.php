@@ -54,10 +54,8 @@
 
 	<?php
 		if(isset($_GET['submit-button'])) {
-			if(inputValid() == true) {
-				// echo "<br>input valid!";
+			if(inputValid() == true) 
 				addDirectorToMovie($db);
-			}
 		}
 
 		function inputValid() {

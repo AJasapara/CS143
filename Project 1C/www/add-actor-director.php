@@ -46,8 +46,6 @@
 	<?php
 		if(isset($_GET['submit-button'])) {
 			if(inputValid() == true) {
-				// ADD THE ACTOR OR DIRECTOR
-				// echo "input valid!";
 				addPerson();
 			}
 		}

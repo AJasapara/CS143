@@ -56,10 +56,8 @@
 
 	<?php
 		if(isset($_GET['submit-button'])) {
-			if(inputValid() == true) {
-				// echo "<br>input valid!";
+			if(inputValid() == true) 
 				addMovie();
-			}
 		}
 
 		function inputValid() {
@@ -166,7 +164,6 @@
 			}
 
 			// Add genres to the movie
-			// echo "Genres added to the movie: <br>";
 			foreach($genre as $movieGenre) {
 				$addMovieGenreQuery = "INSERT INTO MovieGenre VALUES('$newID','$movieGenre')";
 				if($db->query($addMovieGenreQuery) === true) {

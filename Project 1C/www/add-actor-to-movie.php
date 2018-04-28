@@ -1,5 +1,3 @@
-<!-- name varchar(20), time timestamp, mid int, rating int, comment varchar(500) -->
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,7 +48,6 @@
 			}
 
 			echo '</select>';
-
 		?>
 
 
@@ -68,16 +65,12 @@
 	<?php
 		if(isset($_GET['submit-button'])) {
 			if(inputValid() == true) {
-				// echo "<br>input valid!";
 				addActorToMovie($db);
 			}
 		}
 
 		function inputValid() {
-			// Name, rating cannot be null. Review can be empty. 
 			$roleNotEmpty =  $validActor = $validMovie = false;
-			
-		
 
 			if(!empty($_GET['role'])) 
 				$roleNotEmpty = true;
@@ -120,11 +113,8 @@
 			$aid =  $_GET['actor-list'];
 			$role = $_GET['role'];
 
-			// echo $mid . " " . $aid . " " . $role;
-
 			// create query
 			$addActorToMovieQuery = "INSERT INTO MovieActor(mid, aid, role) VALUES('$mid','$aid','$role')";
-			//MovieActor(mid int, aid int, role varchar(50)
 			
 			// Check if both queries were successful
 			if($db->query($addActorToMovieQuery) === true ) {
@@ -141,8 +131,6 @@
 			
 		}
 	?>
-
-
 
 </body>
 
