@@ -56,9 +56,9 @@
 		while($row = $rs->fetch_assoc()) {
 			echo "<tr>";
 			echo "<td align='center'>";
-			$id = $row['id'];
+			$aid = $row['id'];
 			$val = $row['Actor Name'];
-			echo '<a href="actorInfo.php?id='.$id.'">'.$val.'</a>';
+			echo '<a href="actorInfo.php?id='.$aid.'">'.$val.'</a>';
 			echo "</td>";
 			echo "<td align='center'>";
 			$val = $row['Role'];
@@ -67,8 +67,55 @@
 			echo "</tr>";
 		}
 
+		echo "</table></br>";
+		$rs->free();
+
+		echo'<h2>User Reviews</h2>';
+		$q = "SELECT AVG(rating) as avg, COUNT(rating) as count FROM Review WHERE mid = $id";
+		if(!($rs = $db->query($q))) {
+			$errmsg = $db->error;
+			print "Query failed: $errmsg <br />";
+			exit(1);
+		}
+		$row = $rs->fetch_assoc();
+		echo'The average score of this movie is '.$row['avg'].' based on '.$row['count'].' user reviews.</br>';
+		$rs->free();
+		echo'</br>';
+
+		$q = "SELECT name, time, rating, comment FROM Review WHERE mid = $id";
+		if(!($rs = $db->query($q))) {
+			$errmsg = $db->error;
+			print "Query failed: $errmsg <br />";
+			exit(1);
+		}
+		$columnInfo = mysqli_fetch_fields($rs);
+		echo "<table border='1' cellspacing='1' cellpadding='2'>";
+		echo "<tr>";
+		// Print out first row of column names
+		foreach($columnInfo as $attribute) {
+			echo "<th align='center'>";
+			echo $attribute->name;
+			echo "</th>";
+		}
+		echo "</tr>";
+		//Print out query results
+		while($row = $rs->fetch_assoc()) {
+			echo "<tr>";
+			foreach($row as $val) {
+				echo "<td align='center'>";
+				if(is_null($val))
+					echo "N/A";
+				else
+					echo $val;
+				echo "</td>";
+			}
+			echo "</tr>";
+		}
 		echo "</table>";
 		$rs->free();
+		
+
+		echo '<h3><a href="add-comments.php?movie-list='.$id.'">Add Comment!</a></h3>';
 
 	?>
 </body>
