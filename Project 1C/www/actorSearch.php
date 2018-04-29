@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Actor Information</title>
+	<title>Search</title>
 </head>
 
 <body>
-	<h1>Actor Search</h1>
+	<h1>Search</h1>
 	<form action="" method="GET">
 
 		<div class="label"><b>Name</b></div> 
@@ -20,6 +20,7 @@
 	<?php
 		if(isset($_GET['submit-button']) && isset($_GET['name'])) {
 			searchPerson();
+			searchMovie();
 		}
 
 		function searchPerson() {
@@ -65,6 +66,58 @@
 				echo "<td align='center'>";
 				$val = $row['Date of Birth'];
 				echo '<a href="actorInfo.php?id='.$id.'">'.$val.'</a>';
+				echo "</td>";
+				echo "</tr>";
+			}
+
+			echo "</table>";
+			$rs->free();
+
+		}
+
+		function searchMovie() {
+			// Establishing connection to database
+			$db = new mysqli('localhost','cs143','','CS143');
+			if($db->connect_errno > 0) {
+				die('Unable to connect to database [' . $db->connect_error . ']');
+			}
+
+			echo "<h2>Matching Movies Are:</h2>";
+			$name = $_GET['name'];
+			$q = "SELECT id, title AS 'Title', year AS 'Year' FROM Movie WHERE title LIKE '%$name%'";
+
+			
+			if(!($rs = $db->query($q))) {
+				$errmsg = $db->error;
+				print "Query failed: $errmsg <br />";
+				exit(1);
+			}
+			$columnInfo = mysqli_fetch_fields($rs);
+			echo "<table border='1' cellspacing='1' cellpadding='2'>";
+			echo "<tr>";
+
+			// Print out first row of column names
+			foreach($columnInfo as $attribute) {
+				if($attribute->name !== "id"){
+					echo "<th align='center'>";
+					echo "$attribute->name";
+					echo "</th>";
+				}
+			}
+
+			echo "</tr>";
+
+			//Print out query results
+			while($row = $rs->fetch_assoc()) {
+				echo "<tr>";
+				echo "<td align='center'>";
+				$id = $row['id'];
+				$val = $row['Title'];
+				echo '<a href="movieInfo.php?id='.$id.'">'.$val.'</a>';
+				echo "</td>";
+				echo "<td align='center'>";
+				$val = $row['Year'];
+				echo '<a href="movieInfo.php?id='.$id.'">'.$val.'</a>';
 				echo "</td>";
 				echo "</tr>";
 			}

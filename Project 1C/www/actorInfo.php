@@ -12,7 +12,7 @@
 		echo "<h2>Actor information is:</h2>";
 		showTable($q);
 
-		$q = "SELECT role, title FROM MovieActor, Movie WHERE aid = $id AND mid = id";
+		$q = "SELECT mid, role AS 'Role', title AS 'Title' FROM MovieActor, Movie WHERE aid = $id AND mid = id";
 		echo "<h2>Actor's Movies and Role:</h2>";
 		showTable($q);
 
@@ -32,7 +32,7 @@
 
 			// Print out first row of column names
 			foreach($columnInfo as $attribute) {
-				if($attribute->name !== "id"){
+				if($attribute->name !== "mid"){
 					echo "<th align='center'>";
 					echo "$attribute->name";
 					echo "</th>";
@@ -41,10 +41,16 @@
 			echo "</tr>";
 			while($row = $rs->fetch_assoc()) {
 				echo "<tr>";
-				foreach($row as $val) {
+				foreach($row as $key=>$val) {
+					if ($key == "mid"){
+						$mid = $val;
+						continue;
+					}
 					echo "<td align='center'>";
-					if(is_null($val))
+					if($key === "Date of Death" && is_null($val))
 						echo "Still Alive";
+					else if($key === "Title")
+						echo '<a href="movieInfo.php?id='.$mid.'">'.$val.'</a>';
 					else
 						echo $val;
 					echo "</td>";
