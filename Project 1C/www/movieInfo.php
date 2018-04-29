@@ -2,6 +2,10 @@
 <html>
 <head>
 	<title>Movie Information</title>
+	<style>
+	   table {border-collapse:collapse; table-layout:fixed; width:600px;}
+	   table td {word-wrap:break-word;}
+	   </style>
 </head>
 
 <body>
