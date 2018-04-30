@@ -8,47 +8,27 @@
 	<h1>Add Review</h1>
 	<form action="" method="GET">
 
+
 		<div class="label"><b>Your name</b></div> 
 		<input class="input-form text-field" type="text" name="name" maxlength="30">
-		<br><br>
-
-		<div class="label"><b>Movie you're reviewing</b></div> 
-		<?php
-			$db = new mysqli('localhost','cs143','','CS143');
-			if($db->connect_errno > 0) {
-				die('Unable to connect to database [' . $db->connect_error . ']');
-			}
-
-			$movieQuery = "SELECT id, title, year from Movie";
-			$movieRes = $db->query($movieQuery);
-
-			// Show movies in dropdown
-			echo '<select class"dropdown text-field" name="movie-list"> 
-			<option disabled selected value></option>';
-
-			while($row = $movieRes->fetch_assoc()) {
-				echo '<option value="' . $row[id] . '">' . $row[title] . ' (' . $row[year] . ')</option>';
-			}
-
-			echo '</select>';
-
-		?>
 
 		<br><br>
 		<div class="label"><b>Rating</b></div> 
 		Enter a number from 1 to 5.<br> 
 		<input class="input-form text-field" type="text" name="rating" maxlength="30">
-		
 
 		<br><br>
 		<div class="label"><b>Review</b></div> 
 		<textarea type="text" name="review" cols="60" rows="8"></textarea>
+
+		<input type="hidden" name="movieID" value="<?php echo htmlspecialchars($_GET['movie-list']);?>">
 
 
 		<div class="button-container">
 			<input class="submit-button" type="submit" value="Add!" name="submit-button">
 		</div>
 	</form>
+
 
 		<?php
 		if(isset($_GET['submit-button'])) {
@@ -68,13 +48,10 @@
 				if((int) $_GET['rating'] > 0 && (int) $_GET['rating'] < 6)
 					$validRating = true;
 			}
-
-			if(isset($_GET['movie-list']))  
-				$validMovie = true;
-				
-	
+			
+			
 			// Check if everything is valid
-			if($validName  == true  && $validRating  == true  && $validMovie  == true) 
+			if($validName  == true  && $validRating  == true) //  && $validMovie  == true) 
 				return true; // everything is valid
 			
 
@@ -90,8 +67,8 @@
 			if($ratingNotEmpty == true && $validRating == false) 
 				$errMsg = $errMsg . "Rating needs to be a number from 1 to 5<br>";
 
-			if($validMovie == false) 
-				$errMsg = $errMsg . "No movie selected<br>";
+			// if($validMovie == false) 
+			// 	$errMsg = $errMsg . "No movie selected<br>";
 			
 			// display error message
 			echo $errMsg;
@@ -110,7 +87,7 @@
 
 			$name = $_GET['name'];
 			$time = date('Y-m-d G:i:s');
-			$mid = $_GET['movie-list'];
+			$mid = $_GET['movieID'];
 			$review =  $_GET['review'];
 			$rating = $_GET['rating'];
 
