@@ -9,12 +9,35 @@
 			margin: 0 0 3em 0;
 			padding: 0;
 			list-style: none;
+			background-color: #383838;
+			border-bottom: 1px solid #ccc;
+			border-top: 1px solid #ccc;
+			text-align: center;
+		}
+		#nav ul {
+			text-align: center;
 		}
 		#nav li {
-			float: left;
-			display: block;
+			/*float: left;*/
+			display: inline;
+		
+		}
+		#nav a {
+			display:inline-block;
+			padding: 10px;
+		}
+		#nav li a {
 			padding: 8px 15px;
+			color: #ffffff;
+		}
 
+		#nav li a:hover {
+			background-color: #5b5b5b;
+			color: #89bcff;
+		}
+		body {
+			font-family: "Arial";
+			text-align: center;
 		}
 	</style>
 </head>
@@ -26,7 +49,6 @@
 		<li><a href="add-movie.php">add movie info</a></li>
 		<li><a href="add-actor-to-movie.php">add movie/actor relation</a></li>
 		<li><a href="add-director-to-movie.php">add movie/director relation</a></li>
-		<li><a href="add-comments.php">add review</a></li>
 		<li><a href="actorSearch.php">search</a></li>
 	</ul>
 	<h1>Add Movie Info</h1>
@@ -57,22 +79,23 @@
 		<input class="input-form" type="checkbox" name="genre[]" value="Adult">Adult
 		<input class="input-form" type="checkbox" name="genre[]" value="Adventure">Adventure
 		<input class="input-form" type="checkbox" name="genre[]" value="Animation">Animation
-		<input class="input-form" type="checkbox" name="genre[]" value="Comedy">Comedy
+		<input class="input-form" type="checkbox" name="genre[]" value="Comedy">Comedy<br>
 		<input class="input-form" type="checkbox" name="genre[]" value="Crime">Crime
 		<input class="input-form" type="checkbox" name="genre[]" value="Documentary">Documentary
 		<input class="input-form" type="checkbox" name="genre[]" value="Drama">Drama
 		<input class="input-form" type="checkbox" name="genre[]" value="Family">Family
-		<input class="input-form" type="checkbox" name="genre[]" value="Fantasy">Fantasy
+		<input class="input-form" type="checkbox" name="genre[]" value="Fantasy">Fantasy<br>
 		<input class="input-form" type="checkbox" name="genre[]" value="Horror">Horror
 		<input class="input-form" type="checkbox" name="genre[]" value="Musical">Musical
 		<input class="input-form" type="checkbox" name="genre[]" value="Mystery">Mystery
 		<input class="input-form" type="checkbox" name="genre[]" value="Romance">Romance
-		<input class="input-form" type="checkbox" name="genre[]" value="Sci-Fi">Sci-Fi
+		<input class="input-form" type="checkbox" name="genre[]" value="Sci-Fi">Sci-Fi<br>
 		<input class="input-form" type="checkbox" name="genre[]" value="Short">Short
 		<input class="input-form" type="checkbox" name="genre[]" value="Thriller">Thriller
 		<input class="input-form" type="checkbox" name="genre[]" value="War">War
 		<input class="input-form" type="checkbox" name="genre[]" value="Western">Western
-
+		
+		<br><br>
 		<div class="button-container">
 			<input class="submit-button" type="submit" value="Add!" name="submit-button">
 		</div>

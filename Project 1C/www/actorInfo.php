@@ -9,12 +9,35 @@
 			margin: 0 0 3em 0;
 			padding: 0;
 			list-style: none;
+			background-color: #383838;
+			border-bottom: 1px solid #ccc;
+			border-top: 1px solid #ccc;
+			text-align: center;
+		}
+		#nav ul {
+			text-align: center;
 		}
 		#nav li {
-			float: left;
-			display: block;
+			/*float: left;*/
+			display: inline;
+		
+		}
+		#nav a {
+			display:inline-block;
+			padding: 10px;
+		}
+		#nav li a {
 			padding: 8px 15px;
+			color: #ffffff;
+		}
 
+		#nav li a:hover {
+			background-color: #5b5b5b;
+			color: #89bcff;
+		}
+		body {
+			font-family: "Arial";
+			text-align: center;
 		}
 	</style>
 </head>
@@ -26,7 +49,6 @@
 		<li><a href="add-movie.php">add movie info</a></li>
 		<li><a href="add-actor-to-movie.php">add movie/actor relation</a></li>
 		<li><a href="add-director-to-movie.php">add movie/director relation</a></li>
-		<li><a href="add-comments.php">add review</a></li>
 		<li><a href="actorSearch.php">search</a></li>
 	</ul>
 	<h1>Actor Information Page</h1>
@@ -51,7 +73,7 @@
 				exit(1);
 			}
 			$columnInfo = mysqli_fetch_fields($rs);
-			echo "<table border='1' cellspacing='1' cellpadding='2'>";
+			echo "<table align='center' border='1' cellspacing='1' cellpadding='2'>";
 			echo "<tr>";
 
 			// Print out first row of column names
