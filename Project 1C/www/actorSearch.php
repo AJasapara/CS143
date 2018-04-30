@@ -87,7 +87,7 @@
 				exit(1);
 			}
 			$columnInfo = mysqli_fetch_fields($rs);
-			echo "<table border='1' cellspacing='1' cellpadding='2'>";
+			echo "<table align='center' border='1' cellspacing='1' cellpadding='2'>";
 			echo "<tr>";
 
 			// Print out first row of column names
@@ -139,7 +139,7 @@
 				exit(1);
 			}
 			$columnInfo = mysqli_fetch_fields($rs);
-			echo "<table border='1' cellspacing='1' cellpadding='2'>";
+			echo "<table align='center' border='1' cellspacing='1' cellpadding='2'>";
 			echo "<tr>";
 
 			// Print out first row of column names
