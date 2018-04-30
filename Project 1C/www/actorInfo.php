@@ -35,6 +35,9 @@
 			background-color: #5b5b5b;
 			color: #89bcff;
 		}
+		th, td {
+			padding: 5px;
+		}
 		body {
 			font-family: "Arial";
 			text-align: center;
