@@ -111,8 +111,10 @@
 				$validLast = true; // last name was filled out
 			
 
-			if(isset($_GET['sex'])) 
+			if(isset($_GET['sex']) || (empty($_GET['sex']) && ($_GET['person'] == Director))) 
 				$validSex = true; // sex was chosen
+
+		
 			
 			if(!empty($_GET['dob'])) {
 				$dobNotEmpty = true; // DOB was filled out
