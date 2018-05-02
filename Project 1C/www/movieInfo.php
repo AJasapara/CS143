@@ -171,7 +171,7 @@
 		$rs->free();
 		
 
-		echo '<h3><a href="add-comments.php?movie-list='.$id.'">Add Comment!</a></h3>';
+		echo '<h3><a href="add-comments.php?movieID='.$id.'">Add Comment!</a></h3>';
 
 	?>
 </body>

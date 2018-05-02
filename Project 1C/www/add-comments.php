@@ -56,7 +56,7 @@
 
 
 		<div class="label"><b>Your name</b></div> 
-		<input class="input-form text-field" type="text" name="name" maxlength="30">
+		<input class="input-form text-field" type="text" name="name" value="Anonymous" maxlength="30">
 
 		<br><br>
 		<div class="label"><b>Rating</b></div> 
@@ -67,7 +67,7 @@
 		<div class="label"><b>Review</b></div> 
 		<textarea type="text" name="review" cols="60" rows="8"></textarea>
 
-		<input type="hidden" name="movieID" value="<?php echo htmlspecialchars($_GET['movie-list']);?>">
+		<input type="hidden" name="movieID" value="<?php echo htmlspecialchars($_GET['movieID']);?>">
 
 
 		<div class="button-container">
