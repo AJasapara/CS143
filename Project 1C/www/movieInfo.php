@@ -64,8 +64,7 @@
 	<h1>Movie Information Page</h1>
 	<?php
 		$id = $_GET['id'];
-		$q = "SELECT title, company, rating, CONCAT(Director.first, ' ',Director.last) AS 'Director Name', genre FROM Movie, MovieDirector, Director, MovieGenre 
-			WHERE Movie.id = $id AND MovieDirector.mid = $id AND MovieDirector.did = Director.id AND MovieGenre.mid = $id";
+		$q = "SELECT title, company, rating FROM Movie WHERE Movie.id = $id";
 		echo "<h2>Movie information is:</h2>";
 		$db = new mysqli('localhost','cs143','','CS143');
 		if($db->connect_errno > 0) {
@@ -76,12 +75,35 @@
 			print "Query failed: $errmsg <br />";
 			exit(1);
 		}
+
 		$row = $rs->fetch_assoc();
 		echo 'Title: '.$row['title'].'<br/>';
 		echo 'Producer: '.$row['company'].'<br/>';
 		echo 'MPAA Rating: '.$row['rating'].'<br/>';
+		$rs->free();
+
+		$q = "SELECT CONCAT(Director.first, ' ',Director.last) AS 'Director Name' FROM MovieDirector, Director WHERE MovieDirector.mid = $id AND MovieDirector.did = Director.id";
+		if(!($rs = $db->query($q))) {
+			$errmsg = $db->error;
+			print "Query failed: $errmsg <br />";
+			exit(1);
+		}
+		$row = $rs->fetch_assoc();
 		echo 'Director: '.$row['Director Name'].'<br/>';
-		echo 'Genre: '.$row['genre'].'<br/>';
+		$rs->free();
+
+		$q = "SELECT genre FROM MovieGenre WHERE MovieGenre.mid = $id";
+		if(!($rs = $db->query($q))) {
+			$errmsg = $db->error;
+			print "Query failed: $errmsg <br />";
+			exit(1);
+		}
+		$row = $rs->fetch_assoc();
+		echo 'Genre: '.$row['genre'];
+		while($row = $rs->fetch_assoc()){
+			echo ', '.$row['genre'];
+		}
+		echo '<br/>';
 		$rs->free();
 
 		echo "<h2>Actors in this Movie:</h2>";
