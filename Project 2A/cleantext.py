@@ -7,6 +7,9 @@ from __future__ import print_function
 import re
 import string
 import argparse
+import json
+import sys
+import bz2
 
 
 __author__ = ""
@@ -107,7 +110,7 @@ _CONTRACTIONS = {
 
 def sanitize(text):
     """Do parse the text in variable "text" according to the spec, and return
-    a LIST containing FOUR strings 
+    a LIST containing FOUR strings
     1. The parsed text.
     2. The unigrams
     3. The bigrams
@@ -115,8 +118,16 @@ def sanitize(text):
     """
 
     # YOUR CODE GOES BELOW:
+    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r'[\(]?http\S+[\)]?|\]\(.*\)', '', text)
+    text = re.findall(r"\$\d+(?:\,\d+)?|\d+\.\d+|[\w'\-%]+|[.,!?;]", text)
+    text = [token.lower() for token in text]
 
-    return [parsed_text, unigrams, bigrams, trigrams]
+    for token in text:
+        print(token, end=' ')
+
+    print()
+    #return [parsed_text, unigrams, bigrams, trigrams]
 
 
 if __name__ == "__main__":
@@ -128,3 +139,23 @@ if __name__ == "__main__":
     # pass to "sanitize" and print the result as a list.
 
     # YOUR CODE GOES BELOW.
+    file_name = sys.argv[1]
+
+    regex = re.compile(r'^.*[.](?P<ext>\w+)$')
+    file_ext = regex.match(file_name).group('ext')
+
+    if file_ext == 'json':
+        with open(file_name, "r") as json_data:
+            for line in json_data:
+                data = json.loads(line)
+                sanitize(data['body'])
+    elif file_ext == 'bz2':
+        bz2_file = bz2.BZ2File(file_name)
+        line = bz2_file.readline().decode('utf-8')
+        while line:
+            data = json.loads(line)
+            sanitize(data['body'])
+            line = bz2_file.readline().decode('utf-8')
+    else:
+        print('invalid file type')
+        exit(1)
