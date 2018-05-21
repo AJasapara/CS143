@@ -189,7 +189,7 @@ if __name__ == "__main__":
         line = bz2_file.readline().decode('utf-8')
         while line:
             data = json.loads(line)
-            sanitize(data['body'])
+            print(sanitize(data['body']))
             line = bz2_file.readline().decode('utf-8')
     else:
         print('invalid file type')
