@@ -118,9 +118,18 @@ def sanitize(text):
     """
 
     # YOUR CODE GOES BELOW:
+
+    # replace tabs/newlines with space
     text = re.sub(r'\s+', ' ', text)
+
+    # remove URLs
     text = re.sub(r'[\(]?http\S+[\)]?|\]\(.*\)', '', text, re.UNICODE)
+
+    # split external punctuations and remove the ones we don't want
+    # preserves contractions, percentages, and money amounts
     text = re.findall(r"\$\d+(?:\,\d+)?|\d+\.\d+|[\w'\-%]+|[.,!?;]", text, re.UNICODE)
+
+    # make everything lowercase
     text = [token.lower() for token in text]
 
     parsed_text, unigrams, bigrams, trigrams = '', '', '', ''
@@ -130,22 +139,26 @@ def sanitize(text):
 
     for i in range(len_text):
         parsed_text += text[i]
+        # don't wanna add space at the end
         if i != len_text - 1:
             parsed_text += ' '
         if text[i] not in punc:
             unigrams += text[i]
+            # catch case where comment ends with a punctuation
             if i != len_text - 2:
                 unigrams += ' '
 
     for i in range(len_text - 1):
         if text[i] not in punc and text[i + 1] not in punc:
             bigrams += text[i] + '_' + text[i + 1]
+            # catch case where comment ends with a punctuation
             if i != len_text - 3:
                 bigrams += ' '
 
     for i in range(len_text - 2):
         if text[i] not in punc and text[i + 1] not in punc and text[i + 2] not in punc:
             trigrams += text[i] + '_' + text[i + 1] + '_' + text[i + 2]
+            # catch case where comment ends with a punctuation, might be buggy though
             if i != len_text - 4:
                 trigrams += ' '
 
