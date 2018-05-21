@@ -119,15 +119,37 @@ def sanitize(text):
 
     # YOUR CODE GOES BELOW:
     text = re.sub(r'\s+', ' ', text)
-    text = re.sub(r'[\(]?http\S+[\)]?|\]\(.*\)', '', text)
-    text = re.findall(r"\$\d+(?:\,\d+)?|\d+\.\d+|[\w'\-%]+|[.,!?;]", text)
+    text = re.sub(r'[\(]?http\S+[\)]?|\]\(.*\)', '', text, re.UNICODE)
+    text = re.findall(r"\$\d+(?:\,\d+)?|\d+\.\d+|[\w'\-%]+|[.,!?;]", text, re.UNICODE)
     text = [token.lower() for token in text]
 
-    for token in text:
-        print(token, end=' ')
+    parsed_text, unigrams, bigrams, trigrams = '', '', '', ''
 
-    print()
-    #return [parsed_text, unigrams, bigrams, trigrams]
+    punc = string.punctuation
+    len_text = len(text)
+
+    for i in range(len_text):
+        parsed_text += text[i]
+        if i != len_text - 1:
+            parsed_text += ' '
+        if text[i] not in punc:
+            unigrams += text[i]
+            if i != len_text - 2:
+                unigrams += ' '
+
+    for i in range(len_text - 1):
+        if text[i] not in punc and text[i + 1] not in punc:
+            bigrams += text[i] + '_' + text[i + 1]
+            if i != len_text - 3:
+                bigrams += ' '
+
+    for i in range(len_text - 2):
+        if text[i] not in punc and text[i + 1] not in punc and text[i + 2] not in punc:
+            trigrams += text[i] + '_' + text[i + 1] + '_' + text[i + 2]
+            if i != len_text - 4:
+                trigrams += ' '
+
+    return [parsed_text, unigrams, bigrams, trigrams]
 
 
 if __name__ == "__main__":
@@ -148,7 +170,7 @@ if __name__ == "__main__":
         with open(file_name, "r") as json_data:
             for line in json_data:
                 data = json.loads(line)
-                sanitize(data['body'])
+                print(sanitize(data['body']))
     elif file_ext == 'bz2':
         bz2_file = bz2.BZ2File(file_name)
         line = bz2_file.readline().decode('utf-8')
