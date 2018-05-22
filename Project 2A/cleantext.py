@@ -144,23 +144,26 @@ def sanitize(text):
             parsed_text += ' '
         if text[i] not in punc:
             unigrams += text[i]
-            # catch case where comment ends with a punctuation
-            if i != len_text - 2:
-                unigrams += ' '
+            unigrams += ' '
 
     for i in range(len_text - 1):
         if text[i] not in punc and text[i + 1] not in punc:
             bigrams += text[i] + '_' + text[i + 1]
-            # catch case where comment ends with a punctuation
-            if i != len_text - 3:
-                bigrams += ' '
+            bigrams += ' '
 
     for i in range(len_text - 2):
         if text[i] not in punc and text[i + 1] not in punc and text[i + 2] not in punc:
             trigrams += text[i] + '_' + text[i + 1] + '_' + text[i + 2]
-            # catch case where comment ends with a punctuation, might be buggy though
-            if i != len_text - 4:
-                trigrams += ' '
+            trigrams += ' '
+
+    if(unigrams.endswith(' ')):
+    	unigrams = unigrams[:-1]
+
+    if(bigrams.endswith(' ')):
+    	bigrams = bigrams[:-1]
+
+    if(trigrams.endswith(' ')):
+    	trigrams = trigrams[:-1]
 
     return [parsed_text, unigrams, bigrams, trigrams]
 
