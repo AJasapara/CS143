@@ -123,10 +123,9 @@ def sanitize(text):
     text = re.sub(r'\s+', ' ', text, re.UNICODE)
 
     # remove URLs
-    text = re.sub(r'[\(]?http\S+[\)]?|]([\(]).*?([\)])', '', text, re.UNICODE)
+    text = re.sub(r'[\(]?http\S+[\)]?|][\(].*?[\)]', '', text, re.UNICODE)
 
     # split external punctuations and remove the ones we don't want
-    # preserves contractions, percentages, and money amounts
     text = re.findall(r"\$\d+(?:\,\d+)?(?:\w)?|\d+\.\d+|\w+(?:\.+\w+)|\w+(?:\;\w+)|\w(?:\.\w)|\w+(?:\.\”)|\w+(?:\-\w+)|\w+(?:\;\"\w)|\w+(?:\…)|\w+(?:\/\w+)(?:\/\w+)?|\🙄(?:\w)|\w+(?:\(\w)|[\w'\u2014\’\“\”%\@]+|[.!?,;:]", text, re.UNICODE)
 
     # make everything lowercase
@@ -139,7 +138,6 @@ def sanitize(text):
 
     for i in range(len_text):
         parsed_text += text[i]
-        # don't wanna add space at the end
         if i != len_text - 1:
             parsed_text += ' '
         if text[i] not in punc:
