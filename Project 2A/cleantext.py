@@ -120,14 +120,14 @@ def sanitize(text):
     # YOUR CODE GOES BELOW:
 
     # replace tabs/newlines with space
-    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r'\s+', ' ', text, re.UNICODE)
 
     # remove URLs
-    text = re.sub(r'[\(]?http\S+[\)]?|\]\(.*\)', '', text, re.UNICODE)
+    text = re.sub(r'[\(]?http\S+[\)]?|]([\(]).*?([\)])', '', text, re.UNICODE)
 
     # split external punctuations and remove the ones we don't want
     # preserves contractions, percentages, and money amounts
-    text = re.findall(r"\$\d+(?:\,\d+)?|\d+\.\d+|[\w'\-%\/]+|[.!?,;:]", text, re.UNICODE)
+    text = re.findall(r"\$\d+(?:\,\d+)?(?:\w)?|\d+\.\d+|\w+(?:\.+\w+)|\w+(?:\;\w+)|\w(?:\.\w)|\w+(?:\.\”)|\w+(?:\-\w+)|\w+(?:\;\"\w)|\w+(?:\…)|\w+(?:\/\w+)(?:\/\w+)?|[\w'\u2014\’\“\”%\@]+|[.!?,;:]", text, re.UNICODE)
 
     # make everything lowercase
     text = [token.lower() for token in text]
