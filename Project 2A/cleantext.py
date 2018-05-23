@@ -127,7 +127,7 @@ def sanitize(text):
 
     # split external punctuations and remove the ones we don't want
     # preserves contractions, percentages, and money amounts
-    text = re.findall(r"\$\d+(?:\,\d+)?(?:\w)?|\d+\.\d+|\w+(?:\.+\w+)|\w+(?:\;\w+)|\w(?:\.\w)|\w+(?:\.\”)|\w+(?:\-\w+)|\w+(?:\;\"\w)|\w+(?:\…)|\w+(?:\/\w+)(?:\/\w+)?|\🙄(?:\w)|[\w'\u2014\’\“\”%\@]+|[.!?,;:]", text, re.UNICODE)
+    text = re.findall(r"\$\d+(?:\,\d+)?(?:\w)?|\d+\.\d+|\w+(?:\.+\w+)|\w+(?:\;\w+)|\w(?:\.\w)|\w+(?:\.\”)|\w+(?:\-\w+)|\w+(?:\;\"\w)|\w+(?:\…)|\w+(?:\/\w+)(?:\/\w+)?|\🙄(?:\w)|\w+(?:\(\w)|[\w'\u2014\’\“\”%\@]+|[.!?,;:]", text, re.UNICODE)
 
     # make everything lowercase
     text = [token.lower() for token in text]
