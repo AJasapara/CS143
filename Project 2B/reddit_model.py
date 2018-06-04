@@ -15,5 +15,8 @@ if __name__ == "__main__":
     sc   = SparkContext(conf=conf)
     sqlContext = SQLContext(sc)
     sc.addPyFile("cleantext.py")
+    comments = sqlContext.read.json("comments-minimal.json.bz2")
+	submissions = sqlContext.read.json("submissions.json.bz2")
+	labels = sqlContext.read.format('csv').options(header='true', inferSchema='true').load("labeled_data.csv")
     main(sqlContext)
 
