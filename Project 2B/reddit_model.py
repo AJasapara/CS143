@@ -30,9 +30,17 @@ def main(context):
     # TASK 2
     comments.createOrReplaceTempView("comments")
     labels.createOrReplaceTempView("labels")
-    joined_comments = context.sql("select \ labels.Input_id, labels.labeldem, labels.labelgop, labels.labeldjt, body \ from comments join labels on id=Input_id")
+    joined_comments = context.sql("select labels.Input_id, labels.labeldem, labels.labelgop, labels.labeldjt, body from comments join labels on id=Input_id")
 
-    
+    # TASK 4
+    joined_comments.createOrReplaceTempView("joined_comments")
+    context.registerFunction("cleantext", clean, ArrayType(StringType()))
+
+
+    # TASK 5
+    added_ngrams = context.sql("select Input_id, labeldem, labelgop, labeldjt, sanitize(body) as body from joined_comments")
+
+
 
 if __name__ == "__main__":
     conf = SparkConf().setAppName("CS143 Project 2B")
@@ -41,4 +49,3 @@ if __name__ == "__main__":
     sqlContext = SQLContext(sc)
     sc.addPyFile("cleantext.py")
     main(sqlContext)
-
