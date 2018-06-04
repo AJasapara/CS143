@@ -39,11 +39,12 @@ def main(context):
 
     # TASK 5
     added_ngrams = context.sql("select Input_id, labeldem, labelgop, labeldjt, sanitize(body) as body from joined_comments")
+    #do we wanna do a parquet for ^
     
     # TASK 6A
     cv = CountVectorizer(inputCol="body", outputCol="features", minDF=5, binary=True)
-    model = cv.fit(joined_comments)
-    result = model.transform(joined_comments)
+    model = cv.fit(added_ngrams)
+    result = model.transform(added_ngrams)
     result.show()
 
 
