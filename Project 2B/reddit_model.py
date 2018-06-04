@@ -8,6 +8,9 @@ def main(context):
     """Main function takes a Spark SQL context."""
     # YOUR CODE HERE
     # YOU MAY ADD OTHER FUNCTIONS AS NEEDED
+
+
+    # TASK 1
     try:
         comments = context.read.parquet("comments.parquet")
     except:
@@ -23,6 +26,13 @@ def main(context):
     except:
     	labels = context.read.format('csv').options(header='true', inferSchema='true').load("labeled_data.csv")
     	labels.write.parquet("labels.parquet")
+
+    # TASK 2
+    comments.createOrReplaceTempView("comments")
+    labels.createOrReplaceTempView("labels")
+    joined_comments = context.sql("select \ labels.Input_id, labels.labeldem, labels.labelgop, labels.labeldjt, body \ from comments join labels on id=Input_id")
+
+    
 
 if __name__ == "__main__":
     conf = SparkConf().setAppName("CS143 Project 2B")
