@@ -1,7 +1,7 @@
 from __future__ import print_function
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext
-
+from pyspark.ml.feature import CountVectorizer
 # IMPORT OTHER MODULES HERE
 
 def main(context):
@@ -39,7 +39,12 @@ def main(context):
 
     # TASK 5
     added_ngrams = context.sql("select Input_id, labeldem, labelgop, labeldjt, sanitize(body) as body from joined_comments")
-
+    
+    # TASK 6A
+    cv = CountVectorizer(inputCol="body", outputCol="features", minDF=5, binary=True)
+    model = cv.fit(joined_comments)
+    result = model.transform(joined_comments)
+    result.show()
 
 
 if __name__ == "__main__":
