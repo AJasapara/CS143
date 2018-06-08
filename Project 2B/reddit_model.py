@@ -2,12 +2,25 @@ from __future__ import print_function
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext
 from pyspark.ml.feature import CountVectorizer
+from pyspark.sql.functions import udf
+from pyspark.sql.types import ArrayType, StringType
+
+
+import cleantext
 # IMPORT OTHER MODULES HERE
+
+def clean(body):
+	parsed_text, unigrams, bigrams, trigrams = cleantext.sanitize(body)
+	res = unigrams.split(" ");
+	res.extend(bigrams.split(" "))
+	res.extend(trigrams.split(" "))
+	return res
 
 def main(context):
     """Main function takes a Spark SQL context."""
     # YOUR CODE HERE
     # YOU MAY ADD OTHER FUNCTIONS AS NEEDED
+
 
 
     # TASK 1
@@ -34,7 +47,7 @@ def main(context):
 
     # TASK 4
     joined_comments.createOrReplaceTempView("joined_comments")
-    context.registerFunction("cleantext", clean, ArrayType(StringType()))
+    context.registerFunction("sanitize", clean, ArrayType(StringType()))
 
 
     # TASK 5
@@ -46,6 +59,14 @@ def main(context):
     model = cv.fit(added_ngrams)
     result = model.transform(added_ngrams)
     result.show()
+
+    # TASK 6B
+    result.createOrReplaceTempView("result")
+    pos_neg_udf = context.sql("select *, \
+    	case when labeldjt = 1 then 1 else 0 end as positive, \
+    	case when labeldjt = -1 then 1 else 0 end as negative \
+    	from result")
+    pos_neg_udf.show()
 
 
 if __name__ == "__main__":
