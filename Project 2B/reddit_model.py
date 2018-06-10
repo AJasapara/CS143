@@ -69,59 +69,59 @@ def main(context):
         # TASK 6A
         cv = CountVectorizer(inputCol="body", outputCol="features", minDF=5, binary=True)
         model = cv.fit(added_ngrams)
-        result = model.transform(added_ngrams)
-        result.show()
+        # result = model.transform(added_ngrams)
+        # result.show()
 
-        # # TASK 6B
-        result.createOrReplaceTempView("result")
+        # # # TASK 6B
+        # result.createOrReplaceTempView("result")
 
-        pos_df = context.sql("select *, if(labeldjt = 1,1,0) as label from result")
-        neg_df = context.sql("select *, if(labeldjt = -1,1,0) as label from result")
-        pos_df.show()
-        neg_df.show()
+        # pos_df = context.sql("select *, if(labeldjt = 1,1,0) as label from result")
+        # neg_df = context.sql("select *, if(labeldjt = -1,1,0) as label from result")
+        # pos_df.show()
+        # neg_df.show()
 
       
 
-        # TASK 7
+        # # TASK 7
 
-        # Initialize two logistic regression models.
-        # Replace labelCol with the column containing the label, and featuresCol with the column containing the features.
-        poslr = LogisticRegression(labelCol="label", featuresCol="features", maxIter=10).setThreshold(0.2)
-        neglr = LogisticRegression(labelCol="label", featuresCol="features", maxIter=10).setThreshold(0.25)
-        # This is a binary classifier so we need an evaluator that knows how to deal with binary classifiers.
-        posEvaluator = BinaryClassificationEvaluator()
-        negEvaluator = BinaryClassificationEvaluator()
-        # There are a few parameters associated with logistic regression. We do not know what they are a priori.
-        # We will assume the parameter is 1.0. Grid search takes forever.
-        # We do a grid search to find the best parameters. We can replace [1.0] with a list of values to try.
-        posParamGrid = ParamGridBuilder().addGrid(poslr.regParam, [1.0]).build()
-        negParamGrid = ParamGridBuilder().addGrid(neglr.regParam, [1.0]).build()
-        # We initialize a 5 fold cross-validation pipeline.
-        posCrossval = CrossValidator(
-            estimator=poslr,
-            evaluator=posEvaluator,
-            estimatorParamMaps=posParamGrid,
-            numFolds=5)
-        negCrossval = CrossValidator(
-            estimator=neglr,
-            evaluator=negEvaluator,
-            estimatorParamMaps=negParamGrid,
-            numFolds=5)
-        # Although crossvalidation creates its own train/test sets for
-        # tuning, we still need a labeled test set, because it is not
-        # accessible from the crossvalidator (argh!)
-        # Split the data 50/50
-        posTrain, posTest = pos_df.randomSplit([0.5, 0.5])
-        negTrain, negTest = neg_df.randomSplit([0.5, 0.5])
-        # Train the models
-        print("Training positive classifier...")
-        posModel = posCrossval.fit(posTrain)
-        print("Training negative classifier...")
-        negModel = negCrossval.fit(negTrain)
+        # # Initialize two logistic regression models.
+        # # Replace labelCol with the column containing the label, and featuresCol with the column containing the features.
+        # poslr = LogisticRegression(labelCol="label", featuresCol="features", maxIter=10).setThreshold(0.2)
+        # neglr = LogisticRegression(labelCol="label", featuresCol="features", maxIter=10).setThreshold(0.25)
+        # # This is a binary classifier so we need an evaluator that knows how to deal with binary classifiers.
+        # posEvaluator = BinaryClassificationEvaluator()
+        # negEvaluator = BinaryClassificationEvaluator()
+        # # There are a few parameters associated with logistic regression. We do not know what they are a priori.
+        # # We will assume the parameter is 1.0. Grid search takes forever.
+        # # We do a grid search to find the best parameters. We can replace [1.0] with a list of values to try.
+        # posParamGrid = ParamGridBuilder().addGrid(poslr.regParam, [1.0]).build()
+        # negParamGrid = ParamGridBuilder().addGrid(neglr.regParam, [1.0]).build()
+        # # We initialize a 5 fold cross-validation pipeline.
+        # posCrossval = CrossValidator(
+        #     estimator=poslr,
+        #     evaluator=posEvaluator,
+        #     estimatorParamMaps=posParamGrid,
+        #     numFolds=5)
+        # negCrossval = CrossValidator(
+        #     estimator=neglr,
+        #     evaluator=negEvaluator,
+        #     estimatorParamMaps=negParamGrid,
+        #     numFolds=5)
+        # # Although crossvalidation creates its own train/test sets for
+        # # tuning, we still need a labeled test set, because it is not
+        # # accessible from the crossvalidator (argh!)
+        # # Split the data 50/50
+        # posTrain, posTest = pos_df.randomSplit([0.5, 0.5])
+        # negTrain, negTest = neg_df.randomSplit([0.5, 0.5])
+        # # Train the models
+        # print("Training positive classifier...")
+        # posModel = posCrossval.fit(posTrain)
+        # print("Training negative classifier...")
+        # negModel = negCrossval.fit(negTrain)
 
-        # Once we train the models, we don't want to do it again. We can save the models and load them again later.
-        posModel.save("www/pos.model1")
-        negModel.save("www/neg.model1")
+        # # Once we train the models, we don't want to do it again. We can save the models and load them again later.
+        # posModel.save("www/pos.model1")
+        # negModel.save("www/neg.model1")
 
 
         # TASK 8
@@ -137,7 +137,7 @@ def main(context):
         submissions.createOrReplaceTempView("submissions")
         comments.createOrReplaceTempView("comments")
         join_df = context.sql("select comments.link_id as id, comments.body, comments.created_utc, submissions.title, comments.author_flair_text, submissions.score as submission_score, comments.score as comments_score from comments join submissions on replace(comments.link_id, 't3_','')=submissions.id and comments.body not like '%/s%' and comments.body not like '&gt%'")
-        join_df.show()
+        #join_df.show()
         # # check this later lmao
 
         # # ON THE UNSEEN DATA XDXD
@@ -156,19 +156,19 @@ def main(context):
         # cv = CountVectorizer(inputCol="body", outputCol="features", minDF=5, binary=True)
         # model = cv.fit(new_added_ngrams)
         new_result = model.transform(new_added_ngrams)
-        new_result.show()
+        #new_result.show()
 
         loadedPosModel = CrossValidatorModel.load("www/pos.model1")
         loadedNegModel = CrossValidatorModel.load("www/neg.model1")
         posResult = loadedPosModel.transform(new_result).selectExpr("features", "id", "created_utc", "title", "author_flair_text", "body", "submission_score", "comments_score", "probability as pos_probability", "prediction as pos_label", "rawPrediction as pos_raw")
         # posResult = loadedPosModel.transform(new_result)
         # .selectExpr("features", "id", "created_utc", "title", "author_flair_text", "body", "probability as pos_probability", "prediction as pos_label", "rawPrediction as pos_raw")
-        posResult.show()
+        #posResult.show()
         posNegResult = loadedNegModel.transform(posResult).selectExpr("features", "id", "created_utc", "title", "author_flair_text", "body", "submission_score", "comments_score", "pos_probability", "pos_label", "pos_raw", "probability as neg_probability", "prediction as neg_label", "rawPrediction as neg_raw")
-        posNegResult.show()
+        #posNegResult.show()
         posNegResult.createOrReplaceTempView("posNegResult")
         predicted = context.sql("select id, title, created_utc, author_flair_text, submission_score, comments_score, pos_label, neg_label from posNegResult")
-        predicted.show()
+        #predicted.show()
 
        
         predicted.write.parquet("predicted.parquet")
@@ -179,38 +179,50 @@ def main(context):
     # # #maybe write parquet
 
     # # #can someone switch up some variable names, also with the as in the sql statements as well
-
+     # TASK 10
     predicted.createOrReplaceTempView("predicted")
     percent_submission = context.sql(
         "select id, AVG(pos_label), AVG(neg_label) FROM predicted GROUP BY id")
-    percent_submission.show()
+    #percent_submission.show()
     
     percent_day = context.sql(
-        "SELECT FROM_UNIXTIME(created_utc, '%Y%M%D') AS date, AVG(pos_label) AS positive, AVG(neg_label) AS negative FROM predicted GROUP BY date")
-    percent_day.show()
+        "SELECT FROM_UNIXTIME(created_utc, '%Y%M%D') AS date, AVG(pos_label) AS Positive, AVG(neg_label) AS Negative FROM predicted GROUP BY date")
+    #percent_day.show()
 
-    is_state_udf = udf(is_state, BooleanType())
+    def is_state(x):
+        states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
+                  "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois",
+                  "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts",
+                  "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada",
+                  "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota",
+                  "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
+                  "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin",
+                  "Wyoming"]
+        return x in states
+
+    #is_state_udf = udf(is_state, BooleanType())
+    context.registerFunction("is_state_udf", is_state, BooleanType())
     percent_state = context.sql(
-        "SELECT author_flair_text AS state, AVG(pos_labelabel) AS positive, AVG(neglabel) AS negative FROM predicted WHERE(is_state_udf(state)) GROUP BY state")
-    percent_state.show()
+        "SELECT author_flair_text AS state, AVG(pos_label) AS Positive, AVG(neg_label) AS Negative FROM predicted WHERE(is_state_udf(author_flair_text)) GROUP BY author_flair_text")
+    #percent_state.show()
     
     percent_comment_score = context.sql(
-        "SELECT score AS comment_score, AVG(pos_label) AS positive, AVG(neg_label) AS negative FROM predicted GROUP BY comment_score")
-    percent_comment_score.show()
+        "SELECT comments_score as comment_score, AVG(pos_label) AS Positive, AVG(neg_label) AS Negative FROM predicted GROUP BY comments_score")
+    #percent_comment_score.show()
 
     percent_submission_score = context.sql(
-        "SELECT submission_score, AVG(pos_label) AS positive, AVG(neg_label) AS negative FROM predicted GROUP BY submission_score")
-    percent_submission_score.show()
+        "SELECT submission_score, AVG(pos_label) AS Positive, AVG(neg_label) AS Negative FROM predicted GROUP BY submission_score")
+    #percent_submission_score.show()
 
 
     # save as csv
-    # predicted.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("predictions.csv")
-    # percent_submission.orderBy("AVG(pos)", ascending=False).limit(10).repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("top_pos_submissions.csv")
-    # percent_submission.orderBy("AVG(neg)", ascending=False).limit(10).repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("top_neg_submissions.csv")
-    # percent_day.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("time_data.csv")
-    # percent_state.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("state_data.csv")
-    # percent_comment_score.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("comment_score.csv")
-    # percent_submission_score.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("submission_score.csv")
+    predicted.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("predictions.csv")
+    percent_submission.orderBy("AVG(pos_label)", ascending=False).limit(10).repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("top_pos_submissions.csv")
+    percent_submission.orderBy("AVG(neg_label)", ascending=False).limit(10).repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("top_neg_submissions.csv")
+    percent_day.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("time_data.csv")
+    percent_state.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("state_data.csv")
+    percent_comment_score.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("comment_score.csv")
+    percent_submission_score.repartition(1).write.format("com.databricks.spark.csv").option("header","true").save("submission_score.csv")
 
 
 
