@@ -77,7 +77,7 @@ The rename the files to get rid of the ?raw=true
 # Lambert Conformal map of lower 48 states.
 m = Basemap(llcrnrlon=-119, llcrnrlat=22, urcrnrlon=-64, urcrnrlat=49,
         projection='lcc', lat_1=33, lat_2=45, lon_0=-95)
-shp_info = m.readshapefile('/path_to/st99_d00','states',drawbounds=True)  # No extension specified in path here.
+shp_info = m.readshapefile('./st99_d00','states',drawbounds=True)  # No extension specified in path here.
 pos_data = dict(zip(state_data.state, state_data.Positive))
 neg_data = dict(zip(state_data.state, state_data.Negative))
 
@@ -115,7 +115,7 @@ for shapedict in m.states_info:
     if statename not in ['District of Columbia', 'Puerto Rico']:
         neg = neg_data[statename]
         neg_colors[statename] = neg_cmap(1. - np.sqrt(( neg - vmin )/( vmax - vmin )))[:3]
-    statenames.append(statename0)
+    statenames.append(statename)
 
 # NEGATIVE MAP
 ax = plt.gca()
