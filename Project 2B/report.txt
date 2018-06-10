@@ -1,0 +1,32 @@
+QUESTION 1: Take a look at labeled_data.csv. Write the functional dependencies implied by the data.
+
+Input_id-->labeldem
+Input_id-->labelgop
+Input_id-->labeldjt
+
+************************************************
+QUESTION 2: Take a look at the schema for the comments dataframe. Forget BCNF and 3NF. Does the data frame look normalized? In other words, is the data frame free of redundancies that might affect insert/update integrity? If not, how would we decompose it? Why do you believe the collector of the data stored it in this way?
+
+The data frame does not look normalized because it has redundant columns like subreddit and subreddit_id. These are redundant because they already exist in the submissions table. If a comment is part of a submission, it obviously has the same subreddit. We would decompose it by getting rid of those two columns. We think the collector of the data stored it that way because they may have been looking at comments purely to analyze data without considering the actual submission. 
+
+************************************************
+QUESTION 3: Pick one of the joins that you executed for this project. Rerun the join with .explain() attached to it. Include the output. What do you notice? Explain what Spark SQL is doing during the join. Which join algorithm does Spark seem to be using?
+
+
+JOIN: joined_comments = context.sql("select labels.Input_id, labels.labeldem, labels.labelgop, labels.labeldjt, body from comments join labels on id=Input_id").explain()
+OUTPUT:
+== Physical Plan ==
+*(2) Project [Input_id#172, labeldem#173, labelgop#174, labeldjt#175, body#4]
++- *(2) BroadcastHashJoin [id#14], [Input_id#172], Inner, BuildRight
+   :- *(2) Filter isnotnull(id#14)
+   :  +- *(2) Sample 0.0, 0.2, false, -2488598004471025273
+   :     +- *(2) FileScan parquet [body#4,id#14] Batched: true, Format: Parquet, Location: InMemoryFileIndex[file:/home/cs143/data/comments.parquet], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<body:string,id:string>
+   +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, false]))
+      +- *(1) Filter isnotnull(Input_id#172)
+         +- *(1) Sample 0.0, 0.2, false, -8665745127085591957
+            +- *(1) FileScan parquet [Input_id#172,labeldem#173,labelgop#174,labeldjt#175] Batched: true, Format: Parquet, Location: InMemoryFileIndex[file:/home/cs143/data/labels.parquet], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<Input_id:string,labeldem:int,labelgop:int,labeldjt:int>
+
+
+Based on the plan, we can see that Spark SQL is using a broadcast hash join to join the tables, which is more efficient when dealing with large tables (1). "BroadcastHashJoin [id#14], [Input_id#172]" shows how it is joining the tables based on the two keys we provided. We can also see how Project shows the attributes that were "projected" (in relational algebra terms) or "selected" (in SQL terms).  
+
+(1): https://jaceklaskowski.gitbooks.io/mastering-spark-sql/spark-sql-joins-broadcast.html
