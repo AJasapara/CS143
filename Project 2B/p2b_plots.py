@@ -86,7 +86,7 @@ pos_colors = {}
 statenames = []
 pos_cmap = plt.cm.Greens # use 'hot' colormap
 
-vmin = 0; vmax = 1 # set range.
+vmin = 0; vmax = 0.1 # set range.
 for shapedict in m.states_info:
     statename = shapedict['NAME']
     # skip DC and Puerto Rico.
