@@ -86,7 +86,7 @@ pos_colors = {}
 statenames = []
 pos_cmap = plt.cm.Greens # use 'hot' colormap
 
-vmin = 0; vmax = 0.1 # set range.
+vmin = 0; vmax = 1 # set range.
 for shapedict in m.states_info:
     statename = shapedict['NAME']
     # skip DC and Puerto Rico.
@@ -138,7 +138,10 @@ for shapedict in m.states_info:
     statename = shapedict['NAME']
     if statename not in ['District of Columbia', 'Puerto Rico']:
         diff = pos_data[statename] - neg_data[statename]
-        diff_colors[statename] = diff_cmap(1. - np.sqrt(( diff - vmin )/( vmax - vmin )))[:3]
+        mult = 1
+        if diff < 0:
+            mult = -1
+        diff_colors[statename] = diff_cmap(1. - (abs( diff - vmin )/( vmax - vmin )))[:3]
     statenames.append(statename)
 
 # DIFFERENCE MAP
